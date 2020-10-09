@@ -1,17 +1,25 @@
 --[[
-    Ore and Pure Status Display
+    Ore, Pure, and Product Status Display
 
-    Refactored thanks to Dorian Gray
+    Orignally wrote by: Nistus
+    Ore and Pure Refactored thanks to Dorian Gray
+    Products added by: Kondomize
 
     1. Copy & paste this script into your Programming Board, into slot "unit" and filter "start()"
     2. Add a "stop()" filter and enter "displayOff()" into the Lua editor for this filter
     3. Add a "tick()" filter and enter the parameter "updateTick, so "tick(updateTick)". In the Lua editor for the filter enter "processTick()"
     4. Link the core this setup is placed on to your Programming Board and rename the slot to "core"
-    5. Link 2 screens to your Programming Board, preferably S or larger, and name the slots "display1", and "display2"
-    6. Rename your ore and pure storage boxes you want this script to observe. Ores must be named "<orename> Ore", e.g. "Bauxite Ore" and pures must be named "Pure <purename>", e.g. "Pure Alumnium". Any wrongly named container will not be observed.You can rename the searchString under Advanced->Edit Lua Parameters, You MUST include spaces not in the actual substance name. You can have more than one container for a single substance, if you have e.g. three large containers for Hematite, name all of them "Hematite Ore". The script does not support multiple substances in one container.
-    7. On your Programming Board choose Advanced->Edit Lua Parameters and enter your Container Proficiency Bonus in percent (0 to 50) and your Container Optimization Bonus in percent (0-25)
-    8. If you want to use hubs, please note that all hubs must have the same volume in order for the display to work correctly, and you must enter the total volume of a hub as "DefaultHubVolume" as in (7).
-    9. Activate the Programming Board.
+    5. Link 4 screens to your Programming Board, preferably M or larger, and name the slots "display1", "display2", "display3", "display4".
+    6. Rename your ore and pure storage boxes you want this script to observe. Ores must be named "<orename> Ore", e.g. "Bauxite Ore" and pures must be named "Pure <purename>", e.g. "Pure Alumnium". 
+        Any wrongly named container will not be observed.You can rename the searchString under Advanced->Edit Lua Parameters, You MUST include spaces not in the actual substance name. 
+        You can have more than one container for a single substance, if you have e.g. three large containers for Hematite, name all of them "Hematite Ore". 
+        The script does not support multiple substances in one container.
+    7. Rename your product containers to match the list below and add " Product", "Glass Product".
+        The Product list below has names that will for the most part fit one line on screen with no wrapping.
+    8. On your Programming Board choose Advanced->Edit Lua Parameters and enter your Container Proficiency Bonus in percent (0 to 50) and your Container Optimization Bonus in percent (0-25)
+    9. If you want to use hubs, please note that all Ore and Pure hubs must have the same volume in order for the display to work correctly, and you must enter the total volume of a hub as "DefaultHubVolume" as in (8).
+    10. If you use hubs for "Products", this has its own value and can be set following the same as step 9.
+    11. Activate the Programming Board.
 ]]
 
 unit.hide()
@@ -48,7 +56,7 @@ function processTick()
     elementsIds = core.getElementIdList()
     outputData = {}
     outputData2 = {}
-    
+
      substanceMass = {
         Bauxite=1.28;
         Coal=1.35;
@@ -97,37 +105,43 @@ function processTick()
 
     ProductMass = {
         AlLiAlloy=2.5;
-        Grade5TitaniumAlloy=4.43;
+        Duralumin=2.8;
+        G5TitaniumAlloy=4.43;
         Silumin=3;
+        ScAlAlloy=2.85;
+
         Inconel=8.5;
         Steel=8.05;
-        ManganeseReinGlass=2.9;
         MaragingSteel=8.23;
-        AlFeAlloy=7.5;
-        CalciumReinforcedCopper=8.1;
-        TiNbSupraconductor=10.1;
-        PolycalcitePlastic=1.5;
-        PolycarbonatePlastic=1.4;
-        PolysulfidePlastic=1.6;
+        Mangalloy=7.83;
+        StainlessSteel=7.75;
+
+        Glass=2.5;
+        ManganeseReinGlass=2.9;
         AdvancedGlass=2.6;
-        AgLiReinforcedGlass=2.6;
+        GoldCoatedGlass=3;
+        AgLiReinfGlass=2.6;
+
+        AlFeAlloy=7.5;
+        CalciumReinfCopper=8.1;
+        TiNbSupraconductor=10.1;
+        CuAgAlloy=9.2;
+        RedGold=14.13;
+
+        Polycalcite=1.5;
+        Polycarbonate=1.4;
+        Polysulfide=1.6;
+        Fluoropolymer=1.65;
+        Vanamer=1.57;
+
         Wood=0.6;
         CarbonFiber=1.5;
         BiologicalMatter=1;
-
         Concrete=2.41;
         Brick=1.92;
         Marble=2.7;
-        CuAgAlloy=9.2;
-        RedGold=14.13;
-        Glass=2.5;
-        GoldCoatedGlass=3;
-        Mangalloy=7.83;
-        StainlessSteel=7.75;
-        Duralumin=2.8;
-        ScAlAlloy=2.85;
-        Fluoropolymer=1.65;
-        Vanamer=1.57;
+
+        Open=0.01;
     }
 
     function processSubstanceContainer(_id, isOre, isPure)
@@ -243,7 +257,7 @@ function processTick()
             processSubstanceContainer(elementsIds[i], false, true)
         end
         if string.match(core.getElementTypeById(elementsIds[i]), "ontainer") and string.match(core.getElementNameById(elementsIds[i]), searchStringProduct) then
-            processProductContainer(elementsIds[i], false, true)
+            processProductContainer(elementsIds[i], true)
         end
     end
 
@@ -298,7 +312,7 @@ function processTick()
         local id2percent = 0
         if outputData2[_id1]~=nil then 
             id1amount = outputData2[_id1]["amount"]
-            id1percent = (outputData[_id1]["amount"]*1000)/outputData2[_id1]["capacity"]*100
+            id1percent = (outputData2[_id1]["amount"]*1000)/outputData2[_id1]["capacity"]*100
     
         end
         if outputData2[_id2]~=nil then
@@ -385,18 +399,18 @@ function processTick()
         html=htmlHeader
         html=html..d1..d2.."Light Metals"..t1..t2
         html=html..AddHTMLEntry2("AlLiAlloy", "Duralumin")
-        html=html..AddHTMLEntry2("Grade5TitaniumAlloy", "ScAlAlloy")
-        html=html..AddHTMLEntry2("Silumin", "")
+        html=html..AddHTMLEntry2("G5TitaniumAlloy", "ScAlAlloy")
+        html=html..AddHTMLEntry2("Silumin", "Open")
 
         html=html..t1..d2.."Heavy Metals"..t1..t2
         html=html..AddHTMLEntry2("Inconel", "Mangalloy")
         html=html..AddHTMLEntry2("Steel", "StainlessSteel")
-        html=html..AddHTMLEntry2("MaragingSteel", "")
+        html=html..AddHTMLEntry2("MaragingSteel", "Open")
 
         html=html..t1..d2.."Conductor Metals"..t1..t2
         html=html..AddHTMLEntry2("AlFeAlloy", "CuAgAlloy" )
-        html=html..AddHTMLEntry2("CalciumReinforcedCopper", "RedGold")
-        html=html..AddHTMLEntry2("TiNbSupraconductor", "")
+        html=html..AddHTMLEntry2("CalciumReinfCopper", "RedGold")
+        html=html..AddHTMLEntry2("TiNbSconductor", "open")
         html=html..c1
         display3.setHTML(html)
     end
@@ -404,14 +418,14 @@ function processTick()
     if display4 then
         html=htmlHeader
         html=html..d1..d2.."Polymers"..t1..t2
-        html=html..AddHTMLEntry2("PolycarbonatePlastic", "Fluoropolymer")
-        html=html..AddHTMLEntry2("PolycalcitePlastic", "Vanamer")
-        html=html..AddHTMLEntry2("PolysulfidePlastic", "")
+        html=html..AddHTMLEntry2("Polycarbonate", "Fluoropolymer")
+        html=html..AddHTMLEntry2("Polycalcite", "Vanamer")
+        html=html..AddHTMLEntry2("Polysulfide", "Open")
 
         html=html..t1..d2.."Glass"..t1..t2
         html=html..AddHTMLEntry2("Advanced Glass", "Glass")
-        html=html..AddHTMLEntry2("AgLiReinforcedGlass", "GoldCoatedGlass")
-        html=html..AddHTMLEntry2("ManganeseReinGlass", "")
+        html=html..AddHTMLEntry2("AgLiReinfGlass", "GoldCoatedGlass")
+        html=html..AddHTMLEntry2("ManganeseReinGlass", "Open")
 
         html=html..t1..d2.."Other Products"..t1..t2
         html=html..AddHTMLEntry2("Wood", "Concrete")
