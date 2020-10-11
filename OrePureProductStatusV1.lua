@@ -124,7 +124,7 @@ function processTick()
 
         AlFeAlloy=7.5;
         CalciumReinfCopper=8.1;
-        TiNbSupraconductor=10.1;
+        TiNbSconductor=10.1;
         CuAgAlloy=9.2;
         RedGold=14.13;
 
@@ -136,7 +136,7 @@ function processTick()
 
         Wood=0.6;
         CarbonFiber=1.5;
-        BiologicalMatter=1;
+        BioMatter=1;
         Concrete=2.41;
         Brick=1.92;
         Marble=2.7;
@@ -270,8 +270,8 @@ function processTick()
         end 
         return "<td class=\"bar\" valign=top>"..
                     "<svg>"..
-                        "<rect x=\"0\" y=\"4\" rx=\"6\" ry=\"6\" height=\"14\" width=\"122\" stroke=\"white\" stroke-width=\"1\" rx=\"0\" />"..
-                        "<rect x=\"1\" y=\"5\" rx=\"4\" ry=\"4\" height=\"12\" width=\"" .. (120/100*percent) .. "\"  fill=\"" .. barcolour .. "\" opacity=\"1.0\" rx=\"0\"/>"..
+                        "<rect x=\"0vw\" y=\".4vw\" rx=\"4\" ry=\"4\" height=\"2vw\" width=\"12.2vw\" stroke=\"white\" stroke-width=\".1vw\" rx=\"0vw\" />"..
+                        "<rect x=\".1vw\" y=\".5vw\" rx=\"4\" ry=\"4\" height=\"1.8vw\" width=\"" .. (12/100*percent) .. "vw\"  fill=\"" .. barcolour .. "\" opacity=\"1.0\" rx=\"0vw\"/>"..
                     "</svg>"..
                 "</td>"        
     end
@@ -336,19 +336,19 @@ function processTick()
 
     htmlHeader = [[<head><style>.bar { text-align: left; vertical-align: top; border-radius: 0 0em 0em 0; }</style></head>]]
     d1 = [[<div class="bootstrap" style="text-align:left; vertical-align: text-top;">]]
-    d2 = [[<span style="text-align:center; font-size: 3em;">&nbsp;]]
+    d2 = [[<span style="text-transform: capitalize; font-size: 3em;">&nbsp;]]
     t1 = [[&nbsp;</span>
-        <table style="text-transform: capitalize; font-size: 2.3em; table-layout: auto; width: 100%;">
-        <tr style="width:100%; background-color: blue; color: white;">]]
-    t2 = [[ <th style="width:20%; text-align:right;">Type</th>
-            <th style="width:8%; text-align:right;">KL</th>
-            <th style="width:9%;">&nbsp;</th>
-            <th style="width:13%;text-align:left;">Levels</th>
+        <table style="text-transform: capitalize; font-size: 2.3em; table-layout: auto; width: 100vw;">
+        <tr style="width:100vw; background-color: blue; color: white;">]]
+    t2 = [[ <th style="width:20vw; text-align:right;">Type</th>
+            <th style="width:8vw; text-align:right;">KL</th>
+            <th style="width:9vw;">&nbsp;</th>
+            <th style="width:13vw;text-align:left;">Levels</th>
             <th style="background-color: blue;">&nbsp;</th>
-            <th style="width:20%; text-align:right;">Type</th>
-            <th style="width:8%; text-align:right;">KL</th>
-            <th style="width:9%;">&nbsp;</th>
-            <th style="width:13%;text-align:left;">Levels</th>
+            <th style="width:20vw; text-align:right;">Type</th>
+            <th style="width:8vw; text-align:right;">KL</th>
+            <th style="width:9vw;">&nbsp;</th>
+            <th style="width:13vw;text-align:left;">Levels</th>
         </tr>]]
     c1 = [[</table></div> ]]
 
@@ -403,14 +403,14 @@ function processTick()
         html=html..AddHTMLEntry2("Silumin", "Open")
 
         html=html..t1..d2.."Heavy Metals"..t1..t2
-        html=html..AddHTMLEntry2("Inconel", "Mangalloy")
         html=html..AddHTMLEntry2("Steel", "StainlessSteel")
+        html=html..AddHTMLEntry2("Inconel", "Mangalloy")
         html=html..AddHTMLEntry2("MaragingSteel", "Open")
 
         html=html..t1..d2.."Conductor Metals"..t1..t2
         html=html..AddHTMLEntry2("AlFeAlloy", "CuAgAlloy" )
         html=html..AddHTMLEntry2("CalciumReinfCopper", "RedGold")
-        html=html..AddHTMLEntry2("TiNbSconductor", "open")
+        html=html..AddHTMLEntry2("TiNbSconductor", "Open")
         html=html..c1
         display3.setHTML(html)
     end
@@ -429,7 +429,7 @@ function processTick()
 
         html=html..t1..d2.."Other Products"..t1..t2
         html=html..AddHTMLEntry2("Wood", "Concrete")
-        html=html..AddHTMLEntry2("BiologicalMatter", "Brick")
+        html=html..AddHTMLEntry2("BioMatter", "Brick")
         html=html..AddHTMLEntry2("CarbonFiber", "Marble")
         html=html..c1
         display4.setHTML(html)
