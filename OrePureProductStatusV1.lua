@@ -437,3 +437,5 @@ function processTick()
 end
 
 processTick()
+
+unit.setTimer('updateTick', 5)
